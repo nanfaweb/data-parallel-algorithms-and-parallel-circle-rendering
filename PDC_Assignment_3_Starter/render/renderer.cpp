@@ -38,13 +38,23 @@ Image render_reference(int width,int height,const std::vector<Circle>& circles) 
 // Part 3. Your implementation goes here. You may add helper functions above it.
 Image render_parallel(int width,int height,const std::vector<Circle>& circles) {
     Image image{width,height,std::vector<Pixel>(width*height,Pixel{1,1,1})};
-    // TODO: assign independent pixels or tiles to OpenMP workers. For every
-    // pixel, apply the circles in their original input order using covers()
-    // and blend(). Two workers must never write the same pixel.
-    // Do not call render_reference here and do not set the thread count in
-    // this function. Consider writing the main loop with schedule(runtime) so
-    // that OMP_SCHEDULE can change the schedule in the Part 4 experiments.
-    (void)circles;
+    // Pixel-parallel decomposition by image rows. Each row belongs to exactly
+    // one worker, so no pixel is ever written by two threads and no locks are
+    // needed. Within a pixel the circles are applied in their input order, so
+    // the blend sequence (and therefore every float result) is identical to
+    // the reference, which only swaps the loop nesting.
+    // schedule(runtime) lets OMP_SCHEDULE choose static/dynamic for Part 4.
+    const int nc=static_cast<int>(circles.size());
+    const Circle* cs=circles.data();
+    Pixel* px=image.pixels.data();
+    #pragma omp parallel for schedule(runtime)
+    for (int y=0;y<height;++y)
+        for (int x=0;x<width;++x) {
+            Pixel p=px[y*width+x];  // keep the pixel in registers while blending
+            for (int k=0;k<nc;++k)
+                if(covers(cs[k],x,y,width,height)) blend(p,cs[k]);
+            px[y*width+x]=p;
+        }
     return image;
 }
 
