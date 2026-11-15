@@ -266,8 +266,7 @@ box(ax, 2.8, 1.4, 2.4, 0.9, "3. each rank renders\nits own tiles\n(Part 4 code)"
 box(ax, 2.8, 0.1, 2.4, 0.9, "4. MPI_Gatherv\ntile pixels back to root\n(sizes may differ)")
 for i in range(8):
     box(ax, 5.9 + i * 0.5, 2.2, 0.45, 0.7, f"P{i}")
-ax.text(7.6, 1.75, "ranks P0 ... P7
-(P0 is the root)", fontsize=8)
+ax.text(7.6, 1.75, "ranks P0 ... P7\n(P0 is the root)", fontsize=8)
 arrow(ax, (2.1, 2.9), (2.8, 4.3))
 arrow(ax, (2.1, 2.6), (2.8, 3.1))
 arrow(ax, (5.2, 4.4), (6.3, 2.95), "same data to all")
