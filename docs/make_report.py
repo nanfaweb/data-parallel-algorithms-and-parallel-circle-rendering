@@ -57,7 +57,7 @@ CAP = ParagraphStyle("cap", parent=P, fontSize=9.5, leading=12, alignment=TA_JUS
 TITLE = ParagraphStyle("t", parent=H1, fontSize=19, leading=24, alignment=TA_CENTER)
 SUB = ParagraphStyle("s", parent=P, alignment=TA_CENTER)
 CODE = ParagraphStyle("code", parent=P, fontName="CUR", fontSize=8.5, leading=10.5, alignment=0)
-BUL = ParagraphStyle("bul", parent=P, leftIndent=14, bulletIndent=3, spaceAfter=3)
+BUL = ParagraphStyle("bul", parent=P, leftIndent=14, bulletIndent=3, spaceAfter=3, bulletFontName="TNR")
 
 story = []
 
