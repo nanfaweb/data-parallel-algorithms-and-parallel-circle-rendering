@@ -25,7 +25,7 @@ from reportlab.lib.utils import ImageReader
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.pdfmetrics import registerFontFamily
 from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.platypus import (Image, KeepTogether, PageBreak, Paragraph, Preformatted,
+from reportlab.platypus import (CondPageBreak, Image, KeepTogether, PageBreak, Paragraph, Preformatted,
                                 SimpleDocTemplate, Spacer, Table, TableStyle)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -623,8 +623,8 @@ bullets([f"<b>sparse:</b> the serial creation of the 512×512 white image ({img_
          f"{img_ms / rms(r_dyn1,'sparse','optimized',8)*100:.0f}% of the {rms(r_dyn1,'sparse','optimized',8):.2f} ms 8-thread "
          f"time of the optimized renderer (Amdahl's law, not scheduling). For the baseline it is the 78.6 million "
          f"<font face='CUR'>covers()</font> tests, which scale to {sp(r_dyn1,'sparse_512','baseline',8):.1f}× at p = 8.",
-         f"<b>overlap:</b> blending itself. About 10 million tests remain after culling and most of them blend. This scene "
-         f"scales best ({sp(r_dyn1,'overlap_512','optimized',8):.1f}× at p = 8). The remaining loss comes from the "
+         f"<b>overlap:</b> blending itself. About 10 million tests remain after culling and most of them blend. Of the four scenes, "
+         f"the optimized renderer scales best here ({sp(r_dyn1,'overlap_512','optimized',8):.1f}× at p = 8). The remaining loss comes from the "
          f"central tiles having {W['overlap'][5]} times the mean work, and probably from the lower all-core clock speed.",
          f"<b>clustered:</b> load imbalance. The busiest tile has {W['clustered'][5]} times the mean work, and with static scheduling "
          f"one block holds {share*100:.0f}% of the work. Dynamic scheduling fixes most of this; after that the serial "
@@ -633,6 +633,7 @@ bullets([f"<b>sparse:</b> the serial creation of the 512×512 white image ({img_
          f"the thread start and barrier take most of the {rms(r_dyn1,'dense','optimized',8):.2f} ms."])
 
 # ================================================================== PART 5
+story.append(CondPageBreak(9 * cm))
 para("Part 5: MPI collectives and communication-cost reasoning", H1)
 para("Data-flow design", H2)
 figure(os.path.join(FIG, "mpi_flow.png"),
