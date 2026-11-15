@@ -15,3 +15,4 @@ tmp/
 .env
 # course handout (kept locally, not republished)
 PDC_Assignment_3_7G.pdf
+*.zip

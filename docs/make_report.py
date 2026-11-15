@@ -327,9 +327,7 @@ def blelloch_trace(a):
 para("Data-Parallel Algorithms and Parallel Circle Rendering", TITLE)
 para("Parallel and Distributed Computing — Assignment 3 — Combined Performance Report", CAP)
 story.append(Spacer(1, 8))
-table([["Name", "________________________", "Roll number", "________________"],
-       ["Section", "________________________", "Date", "15 November 2026"]],
-      widths=[2.6 * cm, 6 * cm, 2.6 * cm, 5 * cm], header=False, size=9)
+para("Date: 15 November 2026", CAP)
 
 para("Machine and toolchain", H2)
 table([["Item", "Value"],
