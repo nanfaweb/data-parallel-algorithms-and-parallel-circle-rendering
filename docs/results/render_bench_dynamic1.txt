@@ -1,0 +1,44 @@
+# compiler 15.2.0
+# OpenMP version macro 201511
+# processors available 16, default maximum threads 16
+# OMP_SCHEDULE dynamic,1
+# medians of 5 runs after one warmup run, file output is never timed
+# T1 is the parallel code on one thread, speedup = T1 / Tp, efficiency = speedup / p
+# vs_serial = serial reference time / Tp
+input            op         variant   threads    median_ms   speedup  efficiency  vs_serial
+sparse_512       reference  serial          1     162.2850       n/a         n/a      1.000
+sparse_512       baseline   parallel        1      87.0080     1.000       1.000      1.865
+sparse_512       baseline   parallel        2      59.7290     1.457       0.728      2.717
+sparse_512       baseline   parallel        4      32.0760     2.713       0.678      5.059
+sparse_512       baseline   parallel        8      18.0060     4.832       0.604      9.013
+sparse_512       optimized  parallel        1       1.1960     1.000       1.000    135.690
+sparse_512       optimized  parallel        2       0.9930     1.204       0.602    163.429
+sparse_512       optimized  parallel        4       0.9730     1.229       0.307    166.788
+sparse_512       optimized  parallel        8       0.8930     1.339       0.167    181.730
+overlap_512      reference  serial          1     105.0590       n/a         n/a      1.000
+overlap_512      baseline   parallel        1      72.4760     1.000       1.000      1.450
+overlap_512      baseline   parallel        2      42.9420     1.688       0.844      2.447
+overlap_512      baseline   parallel        4      24.1830     2.997       0.749      4.344
+overlap_512      baseline   parallel        8      15.8090     4.584       0.573      6.646
+overlap_512      optimized  parallel        1      42.2480     1.000       1.000      2.487
+overlap_512      optimized  parallel        2      30.8250     1.371       0.685      3.408
+overlap_512      optimized  parallel        4      17.7940     2.374       0.594      5.904
+overlap_512      optimized  parallel        8      10.3870     4.067       0.508     10.114
+clustered_512    reference  serial          1     278.3650       n/a         n/a      1.000
+clustered_512    baseline   parallel        1     144.0980     1.000       1.000      1.932
+clustered_512    baseline   parallel        2     106.7180     1.350       0.675      2.608
+clustered_512    baseline   parallel        4      46.1320     3.124       0.781      6.034
+clustered_512    baseline   parallel        8      28.8920     4.987       0.623      9.635
+clustered_512    optimized  parallel        1       3.2410     1.000       1.000     85.889
+clustered_512    optimized  parallel        2       2.2140     1.464       0.732    125.729
+clustered_512    optimized  parallel        4       1.7480     1.854       0.464    159.248
+clustered_512    optimized  parallel        8       1.4060     2.305       0.288    197.984
+dense_512        reference  serial          1      24.5010       n/a         n/a      1.000
+dense_512        baseline   parallel        1      15.1890     1.000       1.000      1.613
+dense_512        baseline   parallel        2       9.7270     1.562       0.781      2.519
+dense_512        baseline   parallel        4       5.3900     2.818       0.704      4.546
+dense_512        baseline   parallel        8       3.9990     3.798       0.475      6.127
+dense_512        optimized  parallel        1       3.5610     1.000       1.000      6.880
+dense_512        optimized  parallel        2       2.1610     1.648       0.824     11.338
+dense_512        optimized  parallel        4       1.7190     2.072       0.518     14.253
+dense_512        optimized  parallel        8       1.4990     2.376       0.297     16.345

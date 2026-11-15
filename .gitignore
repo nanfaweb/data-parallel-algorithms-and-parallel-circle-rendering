@@ -8,6 +8,7 @@ PDC_Assignment_3_Starter/saxpy_bench
 PDC_Assignment_3_Starter/scan_bench
 PDC_Assignment_3_Starter/render_bench
 PDC_Assignment_3_Starter/edge_tests
+PDC_Assignment_3_Starter/analysis_probe
 *.ppm
 # scratch and secrets
 tmp/

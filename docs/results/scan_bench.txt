@@ -1,0 +1,28 @@
+# compiler 15.2.0
+# OpenMP version macro 201511
+# processors available 16, default maximum threads 16
+# OMP_SCHEDULE not set
+# medians of 7 runs after one warmup run, file output is never timed
+# T1 is the parallel code on one thread, speedup = T1 / Tp, efficiency = speedup / p
+# vs_serial = serial reference time / Tp
+input            op         variant   threads    median_ms   speedup  efficiency  vs_serial
+n=100000         scan       serial          1       0.0550       n/a         n/a      1.000
+n=100000         scan       parallel        1       0.3500     1.000       1.000      0.157
+n=100000         scan       parallel        2       0.8260     0.424       0.212      0.067
+n=100000         scan       parallel        4       1.7100     0.205       0.051      0.032
+n=100000         scan       parallel        8       3.1300     0.112       0.014      0.018
+n=100000         repeats    serial          1       0.4680       n/a         n/a      1.000
+n=100000         repeats    parallel        1       0.7850     1.000       1.000      0.596
+n=100000         repeats    parallel        2       1.4580     0.538       0.269      0.321
+n=100000         repeats    parallel        4       2.2680     0.346       0.087      0.206
+n=100000         repeats    parallel        8       3.6770     0.213       0.027      0.127
+n=10000000       scan       serial          1      16.9780       n/a         n/a      1.000
+n=10000000       scan       parallel        1     122.5150     1.000       1.000      0.139
+n=10000000       scan       parallel        2      94.1300     1.302       0.651      0.180
+n=10000000       scan       parallel        4      81.6380     1.501       0.375      0.208
+n=10000000       scan       parallel        8      82.4570     1.486       0.186      0.206
+n=10000000       repeats    serial          1      43.8720       n/a         n/a      1.000
+n=10000000       repeats    parallel        1     172.2770     1.000       1.000      0.255
+n=10000000       repeats    parallel        2     132.8290     1.297       0.648      0.330
+n=10000000       repeats    parallel        4     106.1240     1.623       0.406      0.413
+n=10000000       repeats    parallel        8     104.9690     1.641       0.205      0.418

@@ -1,0 +1,6 @@
+alloc+zero-fill 1e7 floats (serial): 12.062 ms
+saxpy kernel only, preallocated output, p=1: 8.321 ms  (14.4 GB/s at 12 B/elem)
+saxpy kernel only, preallocated output, p=2: 5.668 ms  (21.2 GB/s at 12 B/elem)
+saxpy kernel only, preallocated output, p=4: 4.458 ms  (26.9 GB/s at 12 B/elem)
+saxpy kernel only, preallocated output, p=8: 4.450 ms  (27.0 GB/s at 12 B/elem)
+512x512 image alloc+white fill (serial): 0.793 ms

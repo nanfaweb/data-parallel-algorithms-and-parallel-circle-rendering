@@ -10,3 +10,4 @@ $CXX $F saxpy/bench.cpp saxpy/saxpy.cpp -o saxpy_bench
 $CXX $F scan/bench.cpp scan/scan.cpp -o scan_bench
 $CXX $F render/bench.cpp render/renderer.cpp render/scenes.cpp -o render_bench
 $CXX $F tests/edge_tests.cpp saxpy/saxpy.cpp scan/scan.cpp render/renderer.cpp render/scenes.cpp -o edge_tests
+$CXX $F tests/analysis_probe.cpp render/renderer.cpp render/scenes.cpp -o analysis_probe

@@ -1,0 +1,12 @@
+alloc+zero-fill 1e7 floats (serial): 14.978 ms
+saxpy kernel only, preallocated output, p=1: 9.839 ms (12.2 GB/s at 12 B/elem)
+saxpy kernel only, preallocated output, p=2: 5.920 ms (20.3 GB/s at 12 B/elem)
+saxpy kernel only, preallocated output, p=4: 5.011 ms (23.9 GB/s at 12 B/elem)
+saxpy kernel only, preallocated output, p=8: 4.592 ms (26.1 GB/s at 12 B/elem)
+512x512 image alloc+white fill (serial): 0.793 ms
+
+scene      circles  baseline_tests  tile_box_tests  opt_covers_tests  reduction  tile_work_max/mean  busiest_8th_share
+dense           40        10485760           10240            603929      17.4x                2.44               0.18
+sparse         300        78643200           76800             57018    1379.3x                3.67               0.15
+overlap        150        39321600           38400           9907383       4.0x                2.43               0.19
+clustered      500       131072000          128000            448558     292.2x               26.67               0.34

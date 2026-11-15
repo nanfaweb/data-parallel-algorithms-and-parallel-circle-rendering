@@ -10,7 +10,7 @@ CXXFLAGS ?= -O2 -std=c++17 -Wall -Wextra -fopenmp
 
 DEMOS = saxpy_demo scan_demo render_demo
 BENCHES = saxpy_bench scan_bench render_bench
-TESTS = edge_tests
+TESTS = edge_tests analysis_probe
 SHARED = common/timing.h common/rng.h
 
 all: $(DEMOS) $(BENCHES) $(TESTS)
@@ -35,6 +35,9 @@ render_bench: render/bench.cpp render/renderer.cpp render/renderer.h render/scen
 
 edge_tests: tests/edge_tests.cpp saxpy/saxpy.cpp scan/scan.cpp render/renderer.cpp render/scenes.cpp $(SHARED)
 	$(CXX) $(CXXFLAGS) tests/edge_tests.cpp saxpy/saxpy.cpp scan/scan.cpp render/renderer.cpp render/scenes.cpp -o $@
+
+analysis_probe: tests/analysis_probe.cpp render/renderer.cpp render/scenes.cpp $(SHARED)
+	$(CXX) $(CXXFLAGS) tests/analysis_probe.cpp render/renderer.cpp render/scenes.cpp -o $@
 
 check: $(DEMOS)
 	./saxpy_demo

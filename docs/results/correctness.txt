@@ -1,0 +1,17 @@
+SAXPY N=1000000 serial_ms=2.176 parallel_ms=2.463 correctness=PASS
+SCAN N=0 scan=PASS repeats=PASS
+SCAN N=1 scan=PASS repeats=PASS
+SCAN N=7 scan=PASS repeats=PASS
+SCAN N=8 scan=PASS repeats=PASS
+SCAN N=9 scan=PASS repeats=PASS
+SCAN N=1024 scan=PASS repeats=PASS
+SCAN N=1025 scan=PASS repeats=PASS
+RENDER 512x512 scene=dense variant=parallel circles=40 serial_ms=24.587 parallel_ms=7.72 correctness=PASS
+RENDER 512x512 scene=dense variant=optimized circles=40 serial_ms=26.56 parallel_ms=3.716 correctness=PASS
+RENDER 512x512 scene=sparse variant=parallel circles=300 serial_ms=161.551 parallel_ms=29.484 correctness=PASS
+RENDER 512x512 scene=sparse variant=optimized circles=300 serial_ms=161.834 parallel_ms=2.943 correctness=PASS
+RENDER 512x512 scene=overlap variant=parallel circles=150 serial_ms=105.366 parallel_ms=22.488 correctness=PASS
+RENDER 512x512 scene=overlap variant=optimized circles=150 serial_ms=102.114 parallel_ms=16.66 correctness=PASS
+RENDER 512x512 scene=clustered variant=parallel circles=500 serial_ms=269.5 parallel_ms=47.32 correctness=PASS
+RENDER 512x512 scene=clustered variant=optimized circles=500 serial_ms=268.321 parallel_ms=3.094 correctness=PASS
+edge tests: 365 checks, 0 failures -> PASS
