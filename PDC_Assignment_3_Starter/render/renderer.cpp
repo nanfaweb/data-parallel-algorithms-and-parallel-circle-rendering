@@ -22,6 +22,25 @@ bool covers(const Circle& c,int x,int y,int w,int h) {
     float dx=px-c.x,dy=py-c.y;
     return dx*dx+dy*dy<=c.r*c.r;
 }
+
+// Inclusive pixel bounding box of a circle, clamped to the image. A pixel
+// center (x + 0.5) / w lies in [cx - r, cx + r] only for x in
+// [(cx - r) * w - 0.5, (cx + r) * w - 0.5]; the box is padded by one extra
+// pixel on every side so rounding can never exclude a covered pixel. An empty
+// box (x0 > x1 or y0 > y1) means the circle misses the image entirely.
+struct Box {int x0,y0,x1,y1;};
+Box pixel_box(const Circle& c,int w,int h) {
+    // Clamp before converting to int so far-away circles cannot overflow.
+    auto cl=[](float v){return std::max(-4.0f,std::min(v,1e7f));};
+    auto lo=[&](float v){return std::max(0,int(std::floor(cl(v)))-1);};
+    auto hi=[&](float v,int n){return std::min(n-1,int(std::ceil(cl(v)))+1);};
+    const float r=std::max(c.r,0.0f);
+    return Box{lo((c.x-r)*w-0.5f),lo((c.y-r)*h-0.5f),
+               hi((c.x+r)*w-0.5f,w),hi((c.y+r)*h-0.5f,h)};
+}
+
+// Side length of the square tiles used by render_optimized.
+constexpr int kTile=32;
 }
 
 // Reference renderer. It visits the circles in order and, for each circle,
@@ -61,19 +80,43 @@ Image render_parallel(int width,int height,const std::vector<Circle>& circles) {
 // Part 4. Your implementation goes here.
 Image render_optimized(int width,int height,const std::vector<Circle>& circles) {
     Image image{width,height,std::vector<Pixel>(width*height,Pixel{1,1,1})};
-    // TODO: produce the same image as render_parallel while skipping work that
-    // cannot change the result. Use either a bounding box for each circle or an
-    // ordered list of candidate circles for each tile, and state which one you
-    // chose in the report.
-    // Rules to follow:
-    //   * Circles must reach every pixel in their original input order. Do not
-    //     sort the circles.
-    //   * Coverage is still decided by covers(). A bounding box is only a
-    //     filter. Pad it by at least one pixel on every side, because rounding
-    //     in floating point can place a pixel center right at the circle edge.
-    //   * Time spent building boxes or candidate lists counts as part of the
-    //     renderer, so keep it inside this function.
-    (void)circles;
+    // Chosen approach: per-circle bounding boxes used as a filter inside an
+    // ordered per-tile candidate pass.
+    //   1. Compute each circle's pixel bounding box once (parallel over circles).
+    //   2. Split the image into 32x32 tiles. Each tile is owned by exactly one
+    //      worker (schedule(runtime) so OMP_SCHEDULE can pick static/dynamic).
+    //   3. The owner walks the circles in their original order, skips every
+    //      circle whose box misses the tile, and blends the rest only over the
+    //      box-tile intersection. covers() still decides coverage.
+    // Within a tile circles are the outer loop and go in input order, so every
+    // pixel still receives its circles in input order; tiles are disjoint, so
+    // no two workers write the same pixel. Nothing is sorted.
+    const int nc=static_cast<int>(circles.size());
+    if(nc==0||width<=0||height<=0) return image;
+    std::vector<Box> boxes(nc);
+    #pragma omp parallel for schedule(static)
+    for (int k=0;k<nc;++k) boxes[k]=pixel_box(circles[k],width,height);
+
+    const int tilesX=(width+kTile-1)/kTile, tilesY=(height+kTile-1)/kTile;
+    const int ntiles=tilesX*tilesY;
+    const Circle* cs=circles.data();
+    const Box* bs=boxes.data();
+    Pixel* px=image.pixels.data();
+    #pragma omp parallel for schedule(runtime)
+    for (int t=0;t<ntiles;++t) {
+        const int tx0=(t%tilesX)*kTile, ty0=(t/tilesX)*kTile;
+        const int tx1=std::min(tx0+kTile,width)-1, ty1=std::min(ty0+kTile,height)-1;
+        for (int k=0;k<nc;++k) {
+            const Box& b=bs[k];
+            const int x0=std::max(b.x0,tx0), x1=std::min(b.x1,tx1);
+            const int y0=std::max(b.y0,ty0), y1=std::min(b.y1,ty1);
+            if(x0>x1||y0>y1) continue;  // circle cannot touch this tile
+            const Circle& c=cs[k];
+            for (int y=y0;y<=y1;++y)
+                for (int x=x0;x<=x1;++x)
+                    if(covers(c,x,y,width,height)) blend(px[y*width+x],c);
+        }
+    }
     return image;
 }
 
