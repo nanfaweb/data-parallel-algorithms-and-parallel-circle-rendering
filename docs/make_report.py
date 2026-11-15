@@ -327,7 +327,15 @@ def blelloch_trace(a):
 para("Data-Parallel Algorithms and Parallel Circle Rendering", TITLE)
 para("Parallel and Distributed Computing — Assignment 3 — Combined Performance Report", CAP)
 story.append(Spacer(1, 8))
-para("Date: 15 November 2026", CAP)
+# Identity comes from the environment so it is never stored in the repository:
+#   REPORT_NAME, REPORT_ROLL, REPORT_SECTION
+_who = [os.environ.get(k, "") for k in ("REPORT_NAME", "REPORT_ROLL", "REPORT_SECTION")]
+if any(_who):
+    table([["Name", _who[0], "Roll number", _who[1]],
+           ["Section", _who[2], "Date", "15 November 2026"]],
+          widths=[2.6 * cm, 6 * cm, 2.6 * cm, 5 * cm], header=False, size=9)
+else:
+    para("Date: 15 November 2026", CAP)
 
 para("Machine and toolchain", H2)
 table([["Item", "Value"],
