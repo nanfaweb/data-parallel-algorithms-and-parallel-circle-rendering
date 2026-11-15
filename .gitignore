@@ -1,0 +1,16 @@
+# build outputs
+*.exe
+*.o
+PDC_Assignment_3_Starter/saxpy_demo
+PDC_Assignment_3_Starter/scan_demo
+PDC_Assignment_3_Starter/render_demo
+PDC_Assignment_3_Starter/saxpy_bench
+PDC_Assignment_3_Starter/scan_bench
+PDC_Assignment_3_Starter/render_bench
+PDC_Assignment_3_Starter/edge_tests
+*.ppm
+# scratch and secrets
+tmp/
+.env
+# course handout (kept locally, not republished)
+PDC_Assignment_3_7G.pdf
